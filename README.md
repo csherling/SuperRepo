@@ -1,0 +1,2 @@
+# SuperRepo
+LOOK! IN THE SKY! IT'S A CLASS! NO, IT'S A TYPE! NO!!!!! IT'S SUPERREPO!!!!!!
