@@ -5,7 +5,7 @@ HW44 --This or That or Fourteen Other Things
 2015-12-07
  */
 
-public class Hexadecimal {
+public class Hexadecimal implements Comparable{
 
     private int _decNum;
     private String _hexNum;
@@ -53,6 +53,9 @@ public class Hexadecimal {
 	return _hexNum;
     }
 
+    public int getDecNum(){
+	return _decNum;
+    }
 
     /*=====================================
       String dectoHex(int) -- converts base-10 input to hexadecimal
@@ -161,15 +164,46 @@ public class Hexadecimal {
       negative integer if this<input, positive integer otherwise
       =============================================*/
 
-    public int compareTo( Object other ) {
-	if(this._decNum == ((Hexadecimal)other)._decNum){
-	    return 0;
+    public int compareTo( Object other ) {                          
+	if(!(other instanceof Comparable))
+	    throw new ClassCastException("/ncompareTo() input not a Comparable");
+	if(other == null)
+	    throw new NullPointerException("/ncompareTo() has no input");
+
+	if(other instanceof Rational){
+	    if((this._decNum * ((Rational)other).getDenominator()) == 
+	       ((Rational)other).getNumerator()){
+		return 0;
+	    }
+	    else if((this._decNum * ((Rational)other).getDenominator()) > 
+		    ((Rational)other).getNumerator()){
+		return 1;
+	    }
+	    else{
+		return -1;
+	    }
 	}
-	else if(this._decNum > ((Hexadecimal)other)._decNum){
-	    return 1;
+else if(other instanceof Binary){
+    if(this._decNum == ((Binary)other).getDecNum()){
+		return 0;
+	    }
+	    else if(this._decNum > ((Binary)other).getDecNum()){
+		return 1;
+	    }
+	    else{
+		return -1;
+	    }
 	}
-	else{
-	    return -1;
+	else {
+	    if(this._decNum == ((Hexadecimal)other).getDecNum()){
+		return 0;
+	    }
+	    else if(this._decNum > ((Hexadecimal)other).getDecNum()){
+		return 1;
+	    }
+	    else{
+		return -1;
+	    }
 	}
     }
     /*

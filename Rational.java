@@ -124,22 +124,53 @@ public class  Rational implements Comparable{
 	this.numerator /= x;
 	this.denominator /= x;
     }
-	
-    public int compareTo(Object aleks){
-		 	return compareTo((Rational)aleks);
-		}
+       
+    public int compareTo(Object other){
+	Rational temp = new Rational(this.getNumerator(), this.getDenominator());
+	temp.reduce();
+	if(!(other instanceof Comparable))
+	    throw new ClassCastException("/ncompareTo() input not a Comparable");
+	if(other == null)
+	    throw new NullPointerException("/ncompareTo() has no input");
 
-    public int compareTo(Rational other){
-    this.reduce();
-    other.reduce();
-	if((this.getNumerator() == other.getNumerator()) && (this.getDenominator() == other.getDenominator())){
-	    return 0;
+	if(other instanceof Binary){
+	    if((((Binary)other).getDecNum() * temp.getDenominator()) == 
+	       temp.getNumerator()){
+		return 0;
+	    }
+	    else if((((Binary)other).getDecNum() * temp.getDenominator()) < 
+	       temp.getNumerator()){
+		return 1;
+	    }
+	    else{
+		return -1;
+	    }
 	}
-	else if((this.getNumerator() > other.getNumerator()) && (this.getDenominator() == other.getDenominator())){
-	    return 1;
+	else if(other instanceof Hexadecimal){
+	    if((((Hexadecimal)other).getDecNum() * temp.getDenominator()) == 
+	       temp.getNumerator()){
+		return 0;
+	    }
+	    else if((((Hexadecimal)other).getDecNum() * temp.getDenominator()) < temp.getNumerator()){
+		return 1;
+	    }
+	    else{
+		return -1;
+	    }
 	}
 	else {
-	    return -1;
+	    if((temp.getNumerator() * ((Rational)other).getDenominator()) ==
+	       temp.getDenominator() * ((Rational)other).getNumerator()){
+		return 0;
+	}
+	    else if(
+	      (temp.getNumerator() * ((Rational)other).getDenominator()) >
+	       temp.getDenominator() *  ((Rational)other).getNumerator()){
+		return 1;
+	    }
+	    else{
+		return -1;
+	    }
 	}
     }
 

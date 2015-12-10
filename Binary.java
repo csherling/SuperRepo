@@ -5,7 +5,7 @@ HW43 This or That
 2015-12-07
  */
 
-public class Binary {
+public class Binary implements Comparable{
 
     private int _decNum;
     private String _binNum;
@@ -50,9 +50,12 @@ public class Binary {
       post: returns String of 1's and 0's representing value of this Object
       =====================================*/
     public String toString() { 
-	return _binNum + " " + _decNum;
+	return _binNum;
     }
 
+    public int getDecNum(){
+	return _decNum;
+    }
 
     /*=====================================
       String decToBin(int) -- converts base-10 input to binary
@@ -149,7 +152,7 @@ public class Binary {
       =============================================*/
 
     public boolean equals( Object other ) { 
-	return ((this==other) || (this.tiString().equals(other.toString())));
+	return ((this==other) || (this.toString().equals(other.toString())));
     }
     /*
     */
@@ -161,22 +164,53 @@ public class Binary {
       negative integer if this<input, positive integer otherwise
       =============================================*/
 
-    public int compareTo( Object other ) {
-	if(this._decNum == ((Binary)other)._decNum){
-	    return 0;
+    public int compareTo( Object other ){
+	if(!(other instanceof Comparable))
+	    throw new ClassCastException("/ncompareTo() input not a Comparable");
+	if(other == null)
+	    throw new NullPointerException("/ncompareTo() has no input");
+
+	if(other instanceof Rational){
+	    if((this._decNum * ((Rational)other).getDenominator()) == 
+	       ((Rational)other).getNumerator()){
+		return 0;
+	    }
+	    else if((this._decNum * ((Rational)other).getDenominator()) > 
+		    ((Rational)other).getNumerator()){
+		return 1;
+	    }
+	    else{
+		return -1;
+	    }
 	}
-	else if(this._decNum > ((Binary)other)._decNum){
-	    return 1;
+	else if(other instanceof Hexadecimal){
+	    if(this._decNum == ((Hexadecimal)other).getDecNum()){
+		return 0;
+	    }
+	    else if(this._decNum > ((Hexadecimal)other).getDecNum()){
+		return 1;
+	    }
+	    else{
+		return -1;
+	    }
 	}
-	else{
-	    return -1;
+	else {
+	    if(this._decNum == ((Binary)other).getDecNum()){
+		return 0;
+	    }
+	    else if(this._decNum > ((Binary)other).getDecNum()){
+		return 1;
+	    }
+	    else{
+		return -1;
+	    }
 	}
     }
     /*
     */
 
     //main method for testing
-    public static void main( String[] args ) {
+    public static void main( String[] args ) throws NullPointerException{
 
 	System.out.println(binToDec("0101")); //5
 	System.out.println(binToDec("1010")); //10
